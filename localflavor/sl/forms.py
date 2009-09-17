@@ -17,7 +17,6 @@ class EMSOField(CharField):
 	
 	def clean(self, value):
 		value = value.strip()
-		print value
 		if len(value) != 13:
 			raise ValidationError(self.default_error_messages['invalid'])
 		
@@ -46,4 +45,5 @@ class EMSOField(CharField):
 		gender = d[4] < 500 and 'male' or 'female'
 		
 		self.info = {'gender': gender, 'birthdate': birthdate}
+		return value
 
