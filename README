@@ -1,0 +1,5 @@
+
+Slovenian localflavor for Django
+
+This is the Slovenian localflavor for Django. Currently contained fields are
+EMSOField and SITaxNumber, expect more to follow.
