@@ -45,7 +45,7 @@ class EMSOField(CharField):
 		self.info = {'gender': gender, 'birthdate': birthdate}
 		return value
 
-class SITaxNumber(CharField):
+class SLTaxNumber(CharField):
 	default_error_messages = {
 		'invalid': _(u'Enter a valid Slovenian tax number.'),
 	}
@@ -78,3 +78,8 @@ class SITaxNumber(CharField):
 		
 		
 		return value
+
+class SLPostalCodeSelect(Select):
+	def __init__(self, attrs=None):
+		from sl_postalcodes import SL_POSTALCODES
+		super(SLPostalCodeSelect, self).__init__(attrs, choices=SL_POSTALCODES)
