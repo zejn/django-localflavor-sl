@@ -3,3 +3,20 @@ Slovenian localflavor for Django
 
 This is the Slovenian localflavor for Django. Currently contained fields are
 EMSOField and SITaxNumber, expect more to follow.
+
+Source code is very small, read https://github.com/iElectric/django-localflavor-sl/blob/master/localflavor/sl/forms.py
+
+
+Changelog
+=========
+
+0.2 (23.12.2010)
+----------------
+
+* Added **SLPostalCodeChoiceField**
+* Sorted posts by alphabetic order
+
+0.1 (15.01.2010)
+----------------
+
+* Initial release
