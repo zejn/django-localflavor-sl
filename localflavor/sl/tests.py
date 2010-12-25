@@ -1,53 +1,63 @@
 import unittest
-from localflavor.sl import forms
+
 from django.forms import ValidationError
 
-class TestSITaxNumber(unittest.TestCase):
+from localflavor.sl import forms
 
-	def test_is_valid(self):
-		f = forms.SITaxNumber()
-		
-		valid_taxnum = '15012557'
-		self.assertEqual(f.clean(valid_taxnum), valid_taxnum)
-	
-	def test_modulo_is_1(self):
-		f = forms.SITaxNumber()
-		
-		valid_taxnum = '22111310'
-		self.assertEqual(f.clean(valid_taxnum), valid_taxnum)
-	
-	def test_modulo_is_0(self):
-		f = forms.SITaxNumber()
-		
-		fail_taxnum = '22241310'
-		self.failUnlessRaises(ValidationError, f.clean, fail_taxnum)
-	
-	def test_not_valid(self):
-		f = forms.SITaxNumber()
-		
-		fail_taxnum = '15012558'
-		self.failUnlessRaises(ValidationError, f.clean, fail_taxnum)
-	
-	def test_wrong_length(self):
-		f = forms.SITaxNumber()
-		
-		fail_taxnum = '1501'
-		self.failUnlessRaises(ValidationError, f.clean, fail_taxnum)
-		
-		fail_taxnum = '1501123123123'
-		self.failUnlessRaises(ValidationError, f.clean, fail_taxnum)
-	
-	def test_not_integers(self):
-		f = forms.SITaxNumber()
-		
-		fail_taxnum = 'abcdabcd'
-		self.failUnlessRaises(ValidationError, f.clean, fail_taxnum)
-	
-	def test_starts_with_zero(self):
-		f = forms.SITaxNumber()
-		
-		fail_taxnum = '01234579'
-		self.failUnlessRaises(ValidationError, f.clean, fail_taxnum)
+
+class TestSLTaxNumber(unittest.TestCase):
+
+    def test_is_valid(self):
+        f = forms.SLTaxNumberField()
+        
+        valid_taxnum = '15012557'
+        self.assertEqual(f.clean(valid_taxnum), valid_taxnum)
+
+    def test_is_valid_SI(self):
+        f = forms.SLTaxNumberField()
+        
+        valid_taxnum = 'SI15012557'
+        self.assertEqual(f.clean(valid_taxnum), '15012557')
+    
+    def test_modulo_is_1(self):
+        f = forms.SLTaxNumberField()
+        
+        valid_taxnum = '22111310'
+        self.assertEqual(f.clean(valid_taxnum), valid_taxnum)
+    
+    def test_modulo_is_0(self):
+        f = forms.SLTaxNumberField()
+        
+        fail_taxnum = '22241310'
+        self.failUnlessRaises(ValidationError, f.clean, fail_taxnum)
+    
+    def test_not_valid(self):
+        f = forms.SLTaxNumberField()
+        
+        fail_taxnum = '15012558'
+        self.failUnlessRaises(ValidationError, f.clean, fail_taxnum)
+    
+    def test_wrong_length(self):
+        f = forms.SLTaxNumberField()
+        
+        fail_taxnum = '1501'
+        self.failUnlessRaises(ValidationError, f.clean, fail_taxnum)
+        
+        fail_taxnum = '1501123123123'
+        self.failUnlessRaises(ValidationError, f.clean, fail_taxnum)
+    
+    def test_not_integers(self):
+        f = forms.SLTaxNumberField()
+        
+        fail_taxnum = 'abcdabcd'
+        self.failUnlessRaises(ValidationError, f.clean, fail_taxnum)
+    
+    def test_starts_with_zero(self):
+        f = forms.SLTaxNumberField()
+        
+        fail_taxnum = '01234579'
+        self.failUnlessRaises(ValidationError, f.clean, fail_taxnum)
+
 
 class TestEMSOField(unittest.TestCase):
 

@@ -50,12 +50,18 @@ class EMSOField(CharField):
         self.info = {'gender': gender, 'birthdate': birthdate}
         return value
 
-class SLTaxNumber(CharField):
+
+class SLTaxNumberField(CharField):
+    """Slovenian tax number field.
+
+    Valid input is SIXXXXXXXX or XXXXXXXX where X is a number.
+    """
+
     default_error_messages = {
         'invalid': _(u'Enter a valid tax number in form SIXXXXXXXX'),
     }
-    sitax_regex = re.compile('^[1-9]\d{6}\d$')
-    
+    sitax_regex = re.compile('^(?:SI)?([1-9]\d{7})$')
+
     def clean(self, value):
         value = value.strip()
 

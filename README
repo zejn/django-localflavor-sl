@@ -19,6 +19,8 @@ Changelog
 
 * add SLPhoneNumberField
 * rename SLPostalCodeChoiceField to SLPostalCodeField to be more localflavor generic 
+* renamed SLTaxNumber to SLTaxNumberField to be more localflavor generic
+* SLTaxNumberField now supports optional SI prefix
 
 0.2 (23.12.2010)
 ----------------
