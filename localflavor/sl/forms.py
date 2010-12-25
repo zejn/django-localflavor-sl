@@ -23,10 +23,8 @@ class EMSOField(CharField):
 
     def clean(self, value):
         value = value.strip()
-        if len(value) != 13:
-            raise ValidationError(self.default_error_messages['invalid'])
-        
-        m  = self.emso_regex.match(value)
+
+        m = self.emso_regex.match(value)
         if m is None:
             raise ValidationError(self.default_error_messages['invalid'])
 
@@ -60,19 +58,18 @@ class SLTaxNumber(CharField):
     
     def clean(self, value):
         value = value.strip()
-        if len(value) != 8:
+
+        m = self.sitax_regex.match(value)
+        if m is None:
             raise ValidationError(self.default_error_messages['invalid'])
-        
+        value = m.groups()[0]
+
+        # validation
         s = 0
-        try:
-            int_values = [int(i) for i in value]
-        except ValueError:
-            raise ValidationError(self.default_error_messages['invalid'])
-        for a,b in zip(int_values, range(8,1,-1)):
-            s += a*b
+        int_values = [int(i) for i in value]
+        for a, b in zip(int_values, range(8, 1, -1)):
+            s += a * b
         chk = 11 - (s % 11)
-        if chk == 11:
-            raise ValidationError(self.default_error_messages['invalid'])
         if chk == 10:
             chk = 0
 
@@ -117,9 +114,10 @@ class SLPhoneNumberField(CharField):
         m = self.phone_regex.match(value.strip())
         if m is None:
             raise ValidationError(self.default_error_messages['invalid'])
-        
-        
-        return value
+        return m.groups()[0]
+
+
+# widgets
 
 class SLPostalCodeSelectWidget(Select):
     """Slovenian post codes select widget.
