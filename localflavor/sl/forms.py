@@ -10,7 +10,7 @@ from sl_postalcodes import SL_POSTALCODES
 
 sorted_sl_postalcodes = sorted(SL_POSTALCODES, key=lambda k: k[1])
 
-class EMSOField(CharField):
+class SLEMSOField(CharField):
     """A form for validating Slovenian personal identification number.
 
     Additionally stores gender and birthday to self.info dictionary.
