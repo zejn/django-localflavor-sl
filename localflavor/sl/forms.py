@@ -5,6 +5,11 @@ from django.forms.fields import CharField, Select, ChoiceField
 from django.forms import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
+from sl_postalcodes import SL_POSTALCODES
+
+
+sorted_sl_postalcodes = sorted(SL_POSTALCODES, key=lambda k: k[1])
+
 class EMSOField(CharField):
     """
     A form for validating Slovenian personal identification number.
@@ -71,8 +76,43 @@ class SLTaxNumber(CharField):
         
         if int_values[-1] != chk:
             raise ValidationError(self.default_error_messages['invalid'])
-        
-        m = self.sitax_regex.match(value)
+
+        return value
+
+
+class SLPostalCodeField(ChoiceField):
+    """Slovenian post codes field.
+    
+    Provides a sorted choice field of major post codes.
+    """
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault('choices', sorted_sl_postalcodes)
+        super(SLPostalCodeField, self).__init__(*args, **kwargs)
+
+
+class SLPhoneNumberField(CharField):
+    """Slovenian phone number field.
+
+    Must have atleast local area code.
+    Country code can be present.
+
+    Examples:
+
+    * +38640XXXXXX
+    * 0038640XXXXXX
+    * 040XXXXXX
+    * 01XXXXXX
+    * 0590XXXXX
+
+    """
+
+    default_error_messages = {
+        'invalid': _(u'Enter phone number in form +386XXXXXXXX or 0XXXXXXXX.'),
+    }
+    phone_regex = re.compile('^(?:(?:00|\+)386|0)(\d{7,8})$')
+
+    def clean(self, value):
+        m = self.phone_regex.match(value.strip())
         if m is None:
             raise ValidationError(self.default_error_messages['invalid'])
         
@@ -80,13 +120,10 @@ class SLTaxNumber(CharField):
         return value
 
 class SLPostalCodeSelectWidget(Select):
+    """Slovenian post codes select widget.
+    
+    Provides a sorted choice field of major post codes.
+    """
     def __init__(self, attrs=None):
-        from sl_postalcodes import SL_POSTALCODES
         super(SLPostalCodeSelectWidget, self).__init__(attrs,
-            choices=sorted(SL_POSTALCODES, key=lambda k: k[1]))
-
-class SLPostalCodeChoiceField(ChoiceField):
-    def __init__(self, *args, **kwargs):
-        from sl_postalcodes import SL_POSTALCODES
-        kwargs.setdefault('choices', sorted(SL_POSTALCODES, key=lambda k: k[1]))
-        super(SLPostalCodeChoiceField, self).__init__(*args, **kwargs)
+            choices=sorted_sl_postalcodes)
