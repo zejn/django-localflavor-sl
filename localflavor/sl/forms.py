@@ -34,9 +34,14 @@ class SLEMSOField(CharField):
         for a, b in zip(int_values, range(7, 1, -1) * 2):
             s += a * b
         chk = s % 11
-        if chk == 10:
+        if chk == 0:
+            K = 0
+        else:
+            K = 11 - chk
+
+        if K == 10:
             raise ValidationError(self.default_error_messages['invalid'])
-        if int_values[-1] != 11 - chk:
+        if int_values[-1] != K:
             raise ValidationError(self.default_error_messages['invalid'])
 
         # extract info

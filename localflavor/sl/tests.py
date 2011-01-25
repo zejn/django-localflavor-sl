@@ -88,12 +88,18 @@ class TestSLEMSOField(unittest.TestCase):
         fail_emso = 'aaaabbbbccccd'
         self.failUnlessRaises(ValidationError, f.clean, fail_emso)
     
-    def test_modulo_is_10(self):
+    def test_modulo_is_1(self):
         f = forms.SLEMSOField()
-        
-        fail_emso = '1010095500072'
+
+        fail_emso = '1010985500800'
         self.failUnlessRaises(ValidationError, f.clean, fail_emso)
-    
+
+    def test_ends_with_zero(self):
+        f = forms.SLEMSOField()
+
+        win_emso = '1010985500400'
+        self.assertEqual(f.clean(win_emso), win_emso)
+
     def test_after_2000(self):
         f = forms.SLEMSOField()
         
